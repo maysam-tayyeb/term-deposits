@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { calculateMonthlyCompounding } from "./utils/interestCalculator.ts";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(3);
 
   return (
     <>
@@ -16,20 +17,24 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>Term Deposits</h1>
+      <div className="card">
+        <label>Deposit </label>
+        <input type="number" />
+      </div>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          {count} month(s)
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      </div>
+      <div className="card">
+        <p>Amount is: {calculateMonthlyCompounding(10000, 1.1, count)}</p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

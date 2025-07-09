@@ -1,7 +1,9 @@
+import { round } from "./currency.ts";
+
 export const calculateMonthlyInterest = (
   balance: number,
   annualRate: number,
-): number => (balance * annualRate) / 12;
+): number => (balance * annualRate) / 100 / 12;
 
 export function calculateMonthlyCompounding(
   principal: number,
@@ -15,5 +17,5 @@ export function calculateMonthlyCompounding(
     balance += interest;
   }
 
-  return balance;
+  return round(balance);
 }
