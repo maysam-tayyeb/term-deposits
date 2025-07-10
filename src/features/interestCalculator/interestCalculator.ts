@@ -5,13 +5,13 @@ import type { ValueOf } from "../../types/generic.types.ts";
 export const compoundingPeriodLength: Record<PeriodicFrequency, number> = {
   monthly: 1,
   quarterly: 3,
-  yearly: 12,
+  annually: 12,
 };
 
 export const compoundingPeriodsPerYear: Record<PeriodicFrequency, number> = {
   monthly: 12,
   quarterly: 4,
-  yearly: 1,
+  annually: 1,
 };
 
 export const calculateInterest = (
@@ -58,6 +58,14 @@ export function calculateQuarterlyCompounding(
   months: number,
 ): number {
   return calculateCompounding(principal, annualRate, months, "quarterly");
+}
+
+export function calculateAnnuallyCompounding(
+  principal: number,
+  annualRate: number,
+  months: number,
+): number {
+  return calculateCompounding(principal, annualRate, months, "annually");
 }
 
 export function calculateAtMaturity(
