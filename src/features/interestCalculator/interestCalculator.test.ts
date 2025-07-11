@@ -9,7 +9,7 @@ import {
 } from "./interestCalculator.ts";
 import { round } from "../../utils/currency.ts";
 
-describe("Calculate interest", () => {
+describe("Calculate balance", () => {
   test("for 4th month @ 1.8 re-invest monthly", () => {
     expect(
       round(
