@@ -39,6 +39,42 @@ describe("Calculate balance", () => {
 });
 
 describe("Calculate compounding interest amounts", () => {
+  describe("throws range error if", () => {
+    test("the request for calculation is for more than 5 years", () => {
+      const belowRange = 0;
+
+      expect(() =>
+        calculateCompoundingInterestAmounts(
+          10_000,
+          1.8,
+          belowRange,
+          compoundingPeriods["monthly"],
+        ),
+      ).toThrowError(
+        new RangeError(
+          `Duration cannot be less than 1 month. Received: ${belowRange}`,
+        ),
+      );
+    });
+
+    test("the request for calculation is for more than 5 years", () => {
+      const exceedingMaxMonths = 5 * 12 + 1;
+
+      expect(() =>
+        calculateCompoundingInterestAmounts(
+          10_000,
+          1.8,
+          exceedingMaxMonths,
+          compoundingPeriods["monthly"],
+        ),
+      ).toThrowError(
+        new RangeError(
+          `Duration cannot exceed 60 months (5 years). Received: ${exceedingMaxMonths}`,
+        ),
+      );
+    });
+  });
+
   test("for 2 months @ 1.8 re-invest monthly", () => {
     expect(
       calculateCompoundingInterestAmounts(
