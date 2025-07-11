@@ -10,7 +10,7 @@ export const compoundingPeriods: Record<PeriodicFrequency, number> = {
   annually: 1,
 };
 
-export const calculateInterestForMonth = (
+export const calculateRawBalanceForMonth = (
   principal: number,
   rate: number,
   targetMonth: number,
@@ -33,7 +33,7 @@ export function calculateCompoundingInterestAmounts(
   const rate = annualRate / 100;
 
   for (let month = 1; month <= months; month++) {
-    const balance = calculateInterestForMonth(
+    const balanceForMonth = calculateRawBalanceForMonth(
       principal,
       rate,
       month,
@@ -43,8 +43,8 @@ export function calculateCompoundingInterestAmounts(
     schedule.push({
       month,
       annualRate,
-      interest: round(balance - principal),
-      balance: round(balance),
+      interest: round(balanceForMonth - principal),
+      balance: round(balanceForMonth),
     });
   }
 
