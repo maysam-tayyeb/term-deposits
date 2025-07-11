@@ -6,6 +6,7 @@ import {
   calculateAtMaturity,
   calculateRawBalanceForMonth,
   compoundingPeriods,
+  calculateCompoundingInterestAmounts,
 } from "./interestCalculator.ts";
 import { round } from "../../utils/currency.ts";
 
@@ -34,6 +35,32 @@ describe("Calculate balance", () => {
         ),
       ),
     ).toBe(10_060.04);
+  });
+});
+
+describe("Calculate compounding interest amounts", () => {
+  test("for 2 months @ 1.8 re-invest monthly", () => {
+    expect(
+      calculateCompoundingInterestAmounts(
+        10_000,
+        1.8,
+        200,
+        compoundingPeriods["monthly"],
+      ),
+    ).toStrictEqual([
+      {
+        annualRate: 1.8,
+        balance: 10015,
+        interest: 15,
+        month: 1,
+      },
+      {
+        annualRate: 1.8,
+        balance: 10030.02,
+        interest: 30.02,
+        month: 2,
+      },
+    ]);
   });
 });
 
