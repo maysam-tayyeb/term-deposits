@@ -29,6 +29,20 @@ export function calculateCompoundingInterestAmounts(
   months: number,
   reInvestFrequency: number,
 ): CalculationResult[] {
+  const MIN_MONTHS = 1;
+  if (months < MIN_MONTHS) {
+    throw new RangeError(
+      `Duration cannot be less than 1 month. Received: ${months}`,
+    );
+  }
+
+  const MAX_MONTHS = 5 * 12;
+  if (months > MAX_MONTHS) {
+    throw new RangeError(
+      `Duration cannot exceed ${MAX_MONTHS} months (5 years). Received: ${months}`,
+    );
+  }
+
   const schedule: CalculationResult[] = [];
   const rate = annualRate / 100;
 
