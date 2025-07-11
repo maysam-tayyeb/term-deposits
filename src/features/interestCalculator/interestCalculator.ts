@@ -1,79 +1,106 @@
 import { round } from "../../utils/currency.ts";
-import type { PeriodicFrequency } from "./interestCalculator.types.ts";
-import type { ValueOf } from "../../types/generic.types.ts";
+import type {
+  CalculationResult,
+  PeriodicFrequency,
+} from "./interestCalculator.types.ts";
 
-export const compoundingPeriodLength: Record<PeriodicFrequency, number> = {
-  monthly: 1,
-  quarterly: 3,
-  annually: 12,
-};
-
-export const compoundingPeriodsPerYear: Record<PeriodicFrequency, number> = {
+export const compoundingPeriods: Record<PeriodicFrequency, number> = {
   monthly: 12,
   quarterly: 4,
   annually: 1,
 };
 
-export const calculateInterest = (
-  balance: number,
-  annualRate: number,
-  numberOfReinvestPerYear: ValueOf<typeof compoundingPeriodsPerYear>,
-): number => (balance * (annualRate / 100)) / numberOfReinvestPerYear;
+export const calculateInterestForMonth = (
+  principal: number,
+  rate: number,
+  targetMonth: number,
+  reInvestFrequency: number,
+): number => {
+  const r = rate;
+  const n = reInvestFrequency;
+  const t = targetMonth / 12;
 
-export function calculateCompounding(
+  return principal * Math.pow(1 + r / n, n * t);
+};
+
+export function calculateCompoundingInterestAmounts(
   principal: number,
   annualRate: number,
   months: number,
-  reInvestFrequency: PeriodicFrequency,
-): number {
-  let balance = principal;
+  reInvestFrequency: number,
+): CalculationResult[] {
+  const schedule: CalculationResult[] = [];
+  const rate = annualRate / 100;
 
-  for (
-    let month = 1;
-    month <= months;
-    month += compoundingPeriodLength[reInvestFrequency]
-  ) {
-    const interest = calculateInterest(
-      balance,
-      annualRate,
-      compoundingPeriodsPerYear[reInvestFrequency],
+  for (let month = 1; month <= months; month++) {
+    const balance = calculateInterestForMonth(
+      principal,
+      rate,
+      month,
+      reInvestFrequency,
     );
-    balance += interest;
+
+    schedule.push({
+      month,
+      annualRate,
+      interest: round(balance - principal),
+      balance: round(balance),
+    });
   }
 
-  return round(balance);
+  return schedule;
 }
 
 export function calculateMonthlyCompounding(
   principal: number,
   annualRate: number,
   months: number,
-): number {
-  return calculateCompounding(principal, annualRate, months, "monthly");
+): CalculationResult[] {
+  return calculateCompoundingInterestAmounts(
+    principal,
+    annualRate,
+    months,
+    compoundingPeriods["monthly"],
+  );
 }
 
 export function calculateQuarterlyCompounding(
   principal: number,
   annualRate: number,
   months: number,
-): number {
-  return calculateCompounding(principal, annualRate, months, "quarterly");
+): CalculationResult[] {
+  return calculateCompoundingInterestAmounts(
+    principal,
+    annualRate,
+    months,
+    compoundingPeriods["quarterly"],
+  );
 }
 
 export function calculateAnnuallyCompounding(
   principal: number,
   annualRate: number,
   months: number,
-): number {
-  return calculateCompounding(principal, annualRate, months, "annually");
+): CalculationResult[] {
+  return calculateCompoundingInterestAmounts(
+    principal,
+    annualRate,
+    months,
+    compoundingPeriods["annually"],
+  );
 }
 
 export function calculateAtMaturity(
   principal: number,
   annualRate: number,
   months: number,
-): number {
-  const interest = (principal * (annualRate / 100) * months) / 12;
+): CalculationResult[] {
+  const reInvestmentFrequency = 12 / months;
 
-  return round(principal + interest);
+  return calculateCompoundingInterestAmounts(
+    principal,
+    annualRate,
+    months,
+    reInvestmentFrequency,
+  );
 }
