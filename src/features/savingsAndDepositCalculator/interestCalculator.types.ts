@@ -8,3 +8,8 @@ export interface CalculationResult {
 export type PayFrequency = "monthly" | "quarterly" | "annually" | "atMaturity";
 
 export type PeriodicFrequency = Exclude<PayFrequency, "atMaturity">;
+
+export type AnnualInterestRate = number & {
+  readonly __brand: unique symbol;
+};
+export type DurationMonths = number & { readonly __brand: unique symbol };
