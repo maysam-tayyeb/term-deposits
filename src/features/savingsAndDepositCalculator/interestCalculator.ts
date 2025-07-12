@@ -1,5 +1,7 @@
 import { round } from "../../utils/currency.ts";
 import type {
+  AnnualInterestRate,
+  DurationMonths,
   CalculationResult,
   PeriodicFrequency,
 } from "./interestCalculator.types.ts";
@@ -30,31 +32,10 @@ const calculateRawBalanceForMonth = (
 
 export function calculateCompoundingInterestAmounts(
   principal: number,
-  annualRate: number,
-  months: number,
+  annualRate: AnnualInterestRate,
+  months: DurationMonths,
   reInvestFrequency: number,
 ): CalculationResult[] {
-  const MIN_MONTHS = 1;
-  if (months < MIN_MONTHS) {
-    throw new RangeError(
-      `Duration cannot be less than 1 month. Received: ${months}`,
-    );
-  }
-
-  const MIN_MONTHS = 1;
-  if (months < MIN_MONTHS) {
-    throw new RangeError(
-      `Duration cannot be less than 1 month. Received: ${months}`,
-    );
-  }
-
-  const MAX_MONTHS = 5 * 12;
-  if (months > MAX_MONTHS) {
-    throw new RangeError(
-      `Duration cannot exceed ${MAX_MONTHS} months (5 years). Received: ${months}`,
-    );
-  }
-
   const schedule: CalculationResult[] = [];
   const rate = annualRate / 100;
 
@@ -79,8 +60,8 @@ export function calculateCompoundingInterestAmounts(
 
 export function calculateMonthlyCompounding(
   principal: number,
-  annualRate: number,
-  months: number,
+  annualRate: AnnualInterestRate,
+  months: DurationMonths,
 ): CalculationResult[] {
   return calculateCompoundingInterestAmounts(
     principal,
@@ -92,8 +73,8 @@ export function calculateMonthlyCompounding(
 
 export function calculateQuarterlyCompounding(
   principal: number,
-  annualRate: number,
-  months: number,
+  annualRate: AnnualInterestRate,
+  months: DurationMonths,
 ): CalculationResult[] {
   return calculateCompoundingInterestAmounts(
     principal,
@@ -105,8 +86,8 @@ export function calculateQuarterlyCompounding(
 
 export function calculateAnnuallyCompounding(
   principal: number,
-  annualRate: number,
-  months: number,
+  annualRate: AnnualInterestRate,
+  months: DurationMonths,
 ): CalculationResult[] {
   return calculateCompoundingInterestAmounts(
     principal,
@@ -118,8 +99,8 @@ export function calculateAnnuallyCompounding(
 
 export function calculateAtMaturity(
   principal: number,
-  annualRate: number,
-  months: number,
+  annualRate: AnnualInterestRate,
+  months: DurationMonths,
 ): CalculationResult[] {
   const reInvestmentFrequency = 12 / months;
 

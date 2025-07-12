@@ -7,53 +7,94 @@ import {
   compoundingPeriods,
   calculateCompoundingInterestAmounts,
 } from "./interestCalculator.ts";
+import {
+  MIN_ALLOWED_INTEREST_RATE,
+  MAX_ALLOWED_INTEREST_RATE,
+  DESCRIPTION_MIN_ALLOWED_INTEREST_RATE,
+  DESCRIPTION_MAX_ALLOWED_INTEREST_RATE,
+  createAnnualInterestRate,
+} from "./annualInterestRate.factory.ts";
+import {
+  MIN_ALLOWED_COMPOUNDING_MONTHS,
+  MAX_ALLOWED_COMPOUNDING_MONTHS,
+  createDurationMonths,
+} from "./durationMonths.factory.ts";
 
 describe("Calculate compounding interest amounts", () => {
-  describe("throws range error if", () => {
-    test("the request for calculation is for more than 5 years", () => {
-      const belowRange = 0;
+  describe("throws range error when", () => {
+    describe("duration months", () => {
+      test(`is below ${MIN_ALLOWED_COMPOUNDING_MONTHS}`, () => {
+        const belowRange = MIN_ALLOWED_COMPOUNDING_MONTHS - 1;
 
-      expect(() =>
-        calculateCompoundingInterestAmounts(
-          10_000,
-          1.8,
-          belowRange,
-          compoundingPeriods["monthly"],
-        ),
-      ).toThrowError(
-        new RangeError(
-          `Duration cannot be less than 1 month. Received: ${belowRange}`,
-        ),
-      );
+        expect(() => {
+          const durationMonths = createDurationMonths(belowRange);
+          calculateCompoundingInterestAmounts(
+            10_000,
+            createAnnualInterestRate(1.8),
+            durationMonths,
+            compoundingPeriods["monthly"],
+          );
+        }).toThrow(RangeError);
+      });
+
+      test(`exceed ${MAX_ALLOWED_COMPOUNDING_MONTHS}`, () => {
+        const exceedingMaxMonths = MAX_ALLOWED_COMPOUNDING_MONTHS + 1;
+
+        expect(() => {
+          const durationMonths = createDurationMonths(exceedingMaxMonths);
+          calculateCompoundingInterestAmounts(
+            10_000,
+            createAnnualInterestRate(1.8),
+            durationMonths,
+            compoundingPeriods["monthly"],
+          );
+        }).toThrow(RangeError);
+      });
     });
 
-    test("the request for calculation is for more than 5 years", () => {
-      const exceedingMaxMonths = 5 * 12 + 1;
+    describe("annual interest rate", () => {
+      test(`is below ${DESCRIPTION_MIN_ALLOWED_INTEREST_RATE}`, () => {
+        const belowRange = MIN_ALLOWED_INTEREST_RATE - 1;
 
-      expect(() =>
-        calculateCompoundingInterestAmounts(
-          10_000,
-          1.8,
-          exceedingMaxMonths,
-          compoundingPeriods["monthly"],
-        ),
-      ).toThrowError(
-        new RangeError(
-          `Duration cannot exceed 60 months (5 years). Received: ${exceedingMaxMonths}`,
-        ),
-      );
+        expect(() => {
+          const annualInterestRate = createAnnualInterestRate(belowRange);
+          calculateCompoundingInterestAmounts(
+            10_000,
+            annualInterestRate,
+            createDurationMonths(3),
+            compoundingPeriods["monthly"],
+          );
+        }).toThrow(RangeError);
+      });
+
+      test(`exceed ${DESCRIPTION_MAX_ALLOWED_INTEREST_RATE}`, () => {
+        const exceedingAllowedInterestRate = MAX_ALLOWED_INTEREST_RATE + 1;
+
+        expect(() => {
+          const annualInterestRate = createAnnualInterestRate(
+            exceedingAllowedInterestRate,
+          );
+          calculateCompoundingInterestAmounts(
+            10_000,
+            annualInterestRate,
+            createDurationMonths(3),
+            compoundingPeriods["monthly"],
+          );
+        }).toThrow(RangeError);
+      });
     });
   });
 
-  test("for 2 months @ 1.8 re-invest monthly", () => {
-    expect(
-      calculateCompoundingInterestAmounts(
-        10_000,
-        1.8,
-        200,
-        compoundingPeriods["monthly"],
-      ),
-    ).toStrictEqual([
+  test("for 3 months @ 1.8 re-invest monthly", () => {
+    const durationMonths = createDurationMonths(3);
+    const schedule = calculateCompoundingInterestAmounts(
+      10_000,
+      createAnnualInterestRate(1.8),
+      durationMonths,
+      compoundingPeriods["monthly"],
+    );
+    expect(schedule).toHaveLength(durationMonths);
+    expect(schedule).toStrictEqual([
       {
         annualRate: 1.8,
         balance: 10015,
@@ -66,25 +107,26 @@ describe("Calculate compounding interest amounts", () => {
         interest: 30.02,
         month: 2,
       },
+      {
+        annualRate: 1.8,
+        balance: 10045.07,
+        interest: 45.07,
+        month: 3,
+      },
     ]);
   });
 });
 
 describe("Term deposit", () => {
   describe("calculate monthly compounding", () => {
-    test("1 month @ 1.1%", () => {
-      expect(calculateMonthlyCompounding(10_000, 1.2, 1)).toStrictEqual([
-        {
-          annualRate: 1.2,
-          balance: 10010,
-          interest: 10,
-          month: 1,
-        },
-      ]);
-    });
-
-    test("3 months @ 1.1%", () => {
-      expect(calculateMonthlyCompounding(10_000, 1.2, 3)).toStrictEqual([
+    test("3 months @ 1.20%", () => {
+      expect(
+        calculateMonthlyCompounding(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(3),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10010,
@@ -106,8 +148,14 @@ describe("Term deposit", () => {
       ]);
     });
 
-    test("5 months @ 3.4%", () => {
-      expect(calculateMonthlyCompounding(10_000, 1.2, 5)).toStrictEqual([
+    test("5 months @ 1.20%", () => {
+      expect(
+        calculateMonthlyCompounding(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(5),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10010,
@@ -144,7 +192,13 @@ describe("Term deposit", () => {
 
   describe("calculate quarterly compounding", () => {
     test("10,000 for 3 months term @ 1.20%", () => {
-      expect(calculateQuarterlyCompounding(10_000, 1.2, 3)).toStrictEqual([
+      expect(
+        calculateQuarterlyCompounding(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(3),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10_009.99,
@@ -166,8 +220,14 @@ describe("Term deposit", () => {
       ]);
     });
 
-    test("3 months term @ 3.4%", () => {
-      expect(calculateQuarterlyCompounding(600_000, 3.4, 3)).toStrictEqual([
+    test("3 months term @ 3.40%", () => {
+      expect(
+        calculateQuarterlyCompounding(
+          600_000,
+          createAnnualInterestRate(3.4),
+          createDurationMonths(3),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 3.4,
           balance: 601695.21,
@@ -189,8 +249,14 @@ describe("Term deposit", () => {
       ]);
     });
 
-    test("5 months term @ 3.4%", () => {
-      expect(calculateQuarterlyCompounding(600_000, 3.4, 5)).toStrictEqual([
+    test("5 months term @ 3.40%", () => {
+      expect(
+        calculateQuarterlyCompounding(
+          600_000,
+          createAnnualInterestRate(3.4),
+          createDurationMonths(5),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 3.4,
           balance: 601695.21,
@@ -226,8 +292,14 @@ describe("Term deposit", () => {
   });
 
   describe("calculate yearly compounding", () => {
-    test("1 year term @ 1.2%", () => {
-      expect(calculateAnnuallyCompounding(10_000, 1.2, 12)).toStrictEqual([
+    test("1 year term @ 1.20%", () => {
+      expect(
+        calculateAnnuallyCompounding(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(12),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10009.95,
@@ -303,97 +375,14 @@ describe("Term deposit", () => {
       ]);
     });
 
-    test("1 year and two months term @ 1.2%", () => {
-      expect(calculateAnnuallyCompounding(10_000, 1.2, 14)).toStrictEqual([
-        {
-          annualRate: 1.2,
-          balance: 10009.95,
-          interest: 9.95,
-          month: 1,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10019.9,
-          interest: 19.9,
-          month: 2,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10029.87,
-          interest: 29.87,
-          month: 3,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10039.84,
-          interest: 39.84,
-          month: 4,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10049.83,
-          interest: 49.83,
-          month: 5,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10059.82,
-          interest: 59.82,
-          month: 6,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10069.83,
-          interest: 69.83,
-          month: 7,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10079.84,
-          interest: 79.84,
-          month: 8,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10089.87,
-          interest: 89.87,
-          month: 9,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10099.9,
-          interest: 99.9,
-          month: 10,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10109.95,
-          interest: 109.95,
-          month: 11,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10120,
-          interest: 120,
-          month: 12,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10130.06,
-          interest: 130.06,
-          month: 13,
-        },
-        {
-          annualRate: 1.2,
-          balance: 10140.14,
-          interest: 140.14,
-          month: 14,
-        },
-      ]);
-    });
-
-    test("1 year and 3 months term @ 1.2%", () => {
-      expect(calculateAnnuallyCompounding(10_000, 1.2, 15)).toStrictEqual([
+    test("1 year and two months term @ 1.20%", () => {
+      expect(
+        calculateAnnuallyCompounding(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(14),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10009.95,
@@ -478,17 +467,17 @@ describe("Term deposit", () => {
           interest: 140.14,
           month: 14,
         },
-        {
-          annualRate: 1.2,
-          balance: 10150.22,
-          interest: 150.22,
-          month: 15,
-        },
       ]);
     });
 
-    test("3 years term @ 1.2%", () => {
-      expect(calculateAnnuallyCompounding(10_000, 1.2, 36)).toStrictEqual([
+    test("3 years term @ 1.20%", () => {
+      expect(
+        calculateAnnuallyCompounding(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(36),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10009.95,
@@ -710,8 +699,14 @@ describe("Term deposit", () => {
   });
 
   describe("calculate at maturity", () => {
-    test("3 months @ 1.2%", () => {
-      expect(calculateAtMaturity(10_000, 1.2, 3)).toStrictEqual([
+    test("3 months @ 1.20%", () => {
+      expect(
+        calculateAtMaturity(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(3),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10_009.99,
@@ -733,8 +728,14 @@ describe("Term deposit", () => {
       ]);
     });
 
-    test("5 months @ 1.2%", () => {
-      expect(calculateAtMaturity(10_000, 1.2, 5)).toStrictEqual([
+    test("5 months @ 1.20%", () => {
+      expect(
+        calculateAtMaturity(
+          10_000,
+          createAnnualInterestRate(1.2),
+          createDurationMonths(5),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.2,
           balance: 10009.98,
@@ -768,8 +769,14 @@ describe("Term deposit", () => {
       ]);
     });
 
-    test("8 months @ 1.3%", () => {
-      expect(calculateAtMaturity(10_000, 1.3, 8)).toStrictEqual([
+    test("8 months @ 1.30%", () => {
+      expect(
+        calculateAtMaturity(
+          10_000,
+          createAnnualInterestRate(1.3),
+          createDurationMonths(8),
+        ),
+      ).toStrictEqual([
         {
           annualRate: 1.3,
           balance: 10010.79,
