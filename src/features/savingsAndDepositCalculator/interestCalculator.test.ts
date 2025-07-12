@@ -4,39 +4,9 @@ import {
   calculateQuarterlyCompounding,
   calculateAnnuallyCompounding,
   calculateAtMaturity,
-  calculateRawBalanceForMonth,
   compoundingPeriods,
   calculateCompoundingInterestAmounts,
 } from "./interestCalculator.ts";
-import { round } from "../../utils/currency.ts";
-
-describe("Calculate balance", () => {
-  test("for 4th month @ 1.8 re-invest monthly", () => {
-    expect(
-      round(
-        calculateRawBalanceForMonth(
-          10_000,
-          1.8 / 100,
-          4,
-          compoundingPeriods["monthly"],
-        ),
-      ),
-    ).toBe(10_060.14);
-  });
-
-  test("for 4th month @ 1.8 re-invest quarterly", () => {
-    expect(
-      round(
-        calculateRawBalanceForMonth(
-          10_000,
-          1.8 / 100,
-          4,
-          compoundingPeriods["quarterly"],
-        ),
-      ),
-    ).toBe(10_060.04);
-  });
-});
 
 describe("Calculate compounding interest amounts", () => {
   describe("throws range error if", () => {

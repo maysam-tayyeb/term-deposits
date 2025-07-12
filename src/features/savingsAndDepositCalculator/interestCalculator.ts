@@ -10,17 +10,22 @@ export const compoundingPeriods: Record<PeriodicFrequency, number> = {
   annually: 1,
 };
 
-export const calculateRawBalanceForMonth = (
+/**
+ * Internal helper: calculates the raw balance for a given month using the compound interest formula.
+ */
+const calculateRawBalanceForMonth = (
   principal: number,
   rate: number,
   targetMonth: number,
   reInvestFrequency: number,
 ): number => {
+  const p = principal;
   const r = rate;
   const n = reInvestFrequency;
   const t = targetMonth / 12;
 
-  return principal * Math.pow(1 + r / n, n * t);
+  //The compound interest formula.
+  return p * Math.pow(1 + r / n, n * t);
 };
 
 export function calculateCompoundingInterestAmounts(
@@ -29,6 +34,13 @@ export function calculateCompoundingInterestAmounts(
   months: number,
   reInvestFrequency: number,
 ): CalculationResult[] {
+  const MIN_MONTHS = 1;
+  if (months < MIN_MONTHS) {
+    throw new RangeError(
+      `Duration cannot be less than 1 month. Received: ${months}`,
+    );
+  }
+
   const MIN_MONTHS = 1;
   if (months < MIN_MONTHS) {
     throw new RangeError(
