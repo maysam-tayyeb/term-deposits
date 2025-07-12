@@ -6,7 +6,7 @@ import {
   calculateAtMaturity,
   compoundingPeriods,
   calculateCompoundingInterestAmounts,
-} from "./interestCalculator.ts";
+} from "./compoundingInterestCalculators.ts";
 import {
   MIN_ALLOWED_INTEREST_RATE,
   MAX_ALLOWED_INTEREST_RATE,

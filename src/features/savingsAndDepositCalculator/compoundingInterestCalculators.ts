@@ -4,7 +4,7 @@ import type {
   DurationMonths,
   CalculationResult,
   PeriodicFrequency,
-} from "./interestCalculator.types.ts";
+} from "./types.ts";
 
 export const compoundingPeriods: Record<PeriodicFrequency, number> = {
   monthly: 12,

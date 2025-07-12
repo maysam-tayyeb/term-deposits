@@ -2,7 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { calculateMonthlyCompounding } from "./features/savingsAndDepositCalculator/interestCalculator.ts";
+import { calculateMonthlyCompounding } from "./features/savingsAndDepositCalculator/compoundingInterestCalculators.ts";
 import { createAnnualInterestRate } from "./features/savingsAndDepositCalculator/annualInterestRate.factory.ts";
 import { createDurationMonths } from "./features/savingsAndDepositCalculator/durationMonths.factory.ts";
 
