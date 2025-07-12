@@ -2,7 +2,9 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { calculateMonthlyCompounding } from "./features/interestCalculator/interestCalculator.ts";
+import { calculateMonthlyCompounding } from "./features/savingsAndDepositCalculator/interestCalculator.ts";
+import { createAnnualInterestRate } from "./features/savingsAndDepositCalculator/annualInterestRate.factory.ts";
+import { createDurationMonths } from "./features/savingsAndDepositCalculator/durationMonths.factory.ts";
 
 function App() {
   const [count, setCount] = useState(3);
@@ -28,7 +30,14 @@ function App() {
         </button>
       </div>
       <div className="card">
-        <p>Amount is: {calculateMonthlyCompounding(10000, 1.1, count)}</p>
+        <p>
+          Amount is:{" "}
+          {calculateMonthlyCompounding(
+            10_000,
+            createAnnualInterestRate(1.1),
+            createDurationMonths(count),
+          ).toString()}
+        </p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
