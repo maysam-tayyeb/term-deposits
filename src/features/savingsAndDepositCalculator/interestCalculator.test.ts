@@ -32,7 +32,7 @@ describe("Calculate compounding interest amounts", () => {
             10_000,
             createAnnualInterestRate(1.8),
             durationMonths,
-            compoundingPeriods["monthly"],
+            compoundingPeriods.monthly,
           );
         }).toThrow(RangeError);
       });
@@ -46,7 +46,7 @@ describe("Calculate compounding interest amounts", () => {
             10_000,
             createAnnualInterestRate(1.8),
             durationMonths,
-            compoundingPeriods["monthly"],
+            compoundingPeriods.monthly,
           );
         }).toThrow(RangeError);
       });
@@ -62,7 +62,7 @@ describe("Calculate compounding interest amounts", () => {
             10_000,
             annualInterestRate,
             createDurationMonths(3),
-            compoundingPeriods["monthly"],
+            compoundingPeriods.monthly,
           );
         }).toThrow(RangeError);
       });
@@ -78,7 +78,7 @@ describe("Calculate compounding interest amounts", () => {
             10_000,
             annualInterestRate,
             createDurationMonths(3),
-            compoundingPeriods["monthly"],
+            compoundingPeriods.monthly,
           );
         }).toThrow(RangeError);
       });
@@ -91,7 +91,7 @@ describe("Calculate compounding interest amounts", () => {
       10_000,
       createAnnualInterestRate(1.8),
       durationMonths,
-      compoundingPeriods["monthly"],
+      compoundingPeriods.monthly,
     );
     expect(schedule).toHaveLength(durationMonths);
     expect(schedule).toStrictEqual([

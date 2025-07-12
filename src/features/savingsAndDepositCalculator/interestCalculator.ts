@@ -67,7 +67,7 @@ export function calculateMonthlyCompounding(
     principal,
     annualRate,
     months,
-    compoundingPeriods["monthly"],
+    compoundingPeriods.monthly,
   );
 }
 
@@ -80,7 +80,7 @@ export function calculateQuarterlyCompounding(
     principal,
     annualRate,
     months,
-    compoundingPeriods["quarterly"],
+    compoundingPeriods.quarterly,
   );
 }
 
@@ -93,7 +93,7 @@ export function calculateAnnuallyCompounding(
     principal,
     annualRate,
     months,
-    compoundingPeriods["annually"],
+    compoundingPeriods.annually,
   );
 }
 
