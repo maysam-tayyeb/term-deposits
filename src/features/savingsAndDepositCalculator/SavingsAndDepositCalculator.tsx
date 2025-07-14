@@ -147,6 +147,7 @@ export function SavingsAndDepositCalculator() {
       {schedule.length > 0 && (
         <div className="flex gap-4">
           <div className="max-h-[32rem] overflow-y-auto flex-1">
+            <h2 className="text-xl font-bold mb-4">Projected savings</h2>
             <table className="w-full border-collapse">
               <thead>
                 <tr>
