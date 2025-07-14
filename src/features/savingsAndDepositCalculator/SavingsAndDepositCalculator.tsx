@@ -180,16 +180,18 @@ export function SavingsAndDepositCalculator() {
           <div className="flex flex-col justify-start border p-4">
             <div>
               <span className="font-medium text-[#de313b]">Final balance</span>
-              <span className="block font-bold mt-1">
-                ${Math.round(schedule[schedule.length - 1].balance)}
+              <span className="block font-bold text-4xl mt-1">
+                <span className="text-2xl align-top">$</span>
+                {Math.round(schedule[schedule.length - 1].balance)}
               </span>
             </div>
             <div className="mb-2">
               <span className="font-medium text-[#de313b]">
                 Total interest earned
               </span>
-              <span className="block font-bold mt-1">
-                ${Math.round(schedule[schedule.length - 1].interest)}
+              <span className="block font-bold text-4xl mt-1">
+                <span className="text-2xl align-top">$</span>
+                {Math.round(schedule[schedule.length - 1].interest)}
               </span>
             </div>
           </div>
