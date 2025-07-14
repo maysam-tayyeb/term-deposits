@@ -1,4 +1,4 @@
-# Savings & Deposit Calculator — Term Deposit App 
+# Savings & Deposit Calculator — Term Deposit 
 
 This web app focuses solely on computing compound reinvestment returns for a fixed deposit. Users enter:
 
