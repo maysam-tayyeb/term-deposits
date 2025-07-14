@@ -8,7 +8,7 @@ export const DESCRIPTION_MAX_ALLOWED_INTEREST_RATE = `${MAX_ALLOWED_INTEREST_RAT
 export function createAnnualInterestRate(value: number): AnnualInterestRate {
   if (value < MIN_ALLOWED_INTEREST_RATE || value > MAX_ALLOWED_INTEREST_RATE) {
     throw new RangeError(
-      `Interest rate must be between ${DESCRIPTION_MIN_ALLOWED_INTEREST_RATE} and ${DESCRIPTION_MAX_ALLOWED_INTEREST_RATE}%. Received: ${value.toFixed(2)}%`,
+      `Interest rate must be between ${DESCRIPTION_MIN_ALLOWED_INTEREST_RATE} and ${DESCRIPTION_MAX_ALLOWED_INTEREST_RATE}. Received: ${value.toFixed(2)}%`,
     );
   }
   return value as AnnualInterestRate;
