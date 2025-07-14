@@ -100,7 +100,7 @@ export function SavingsAndDepositCalculator() {
           </label>
           <input
             type="number"
-            step="0.01"
+            step="0.1"
             value={annualRate}
             onChange={(e) => setAnnualRate(parseFloat(e.target.value))}
             className="w-full border rounded p-2"
