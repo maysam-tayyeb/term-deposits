@@ -78,12 +78,14 @@ export function SavingsAndDepositCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4 text-[#de313b]">Term Deposite</h1>
+      <h1 className="text-xl font-bold mb-4 text-[#de313b]">
+        Calculate Term Deposit
+      </h1>
       {error && <div className="text-red-600 mb-4">{error}</div>}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
           <label className="block text-sm font-medium mb-1">
-            Starting with
+            Starting with ($)
           </label>
           <input
             type="number"
@@ -94,7 +96,7 @@ export function SavingsAndDepositCalculator() {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">
-            Annual Rate (% p.a.)
+            Interest rate (% p.a.)
           </label>
           <input
             type="number"
@@ -106,7 +108,7 @@ export function SavingsAndDepositCalculator() {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">
-            Duration (months)
+            Investment term (months)
           </label>
           <input
             type="number"
@@ -176,14 +178,14 @@ export function SavingsAndDepositCalculator() {
           </div>
           <div className="flex flex-col justify-start border p-4">
             <div>
-              <span className="font-medium text-[#de313b]">Final Balance</span>
+              <span className="font-medium text-[#de313b]">Final balance</span>
               <span className="block font-bold mt-1">
                 ${Math.round(schedule[schedule.length - 1].balance)}
               </span>
             </div>
             <div className="mb-2">
               <span className="font-medium text-[#de313b]">
-                Total Interest Earned
+                Total interest earned
               </span>
               <span className="block font-bold mt-1">
                 ${Math.round(schedule[schedule.length - 1].interest)}
