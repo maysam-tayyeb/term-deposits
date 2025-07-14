@@ -15,7 +15,11 @@ import type {
   CalculationResult,
   PayFrequency,
 } from "./compoundingInterestCalculators.types";
-import { createAnnualInterestRate } from "./annualInterestRate.factory.ts";
+import {
+  createAnnualInterestRate,
+  MAX_ALLOWED_INTEREST_RATE,
+  MIN_ALLOWED_INTEREST_RATE,
+} from "./annualInterestRate.factory.ts";
 
 const frequencyOptions: { label: string; value: PayFrequency }[] = [
   { label: "Monthly", value: "monthly" },
@@ -103,6 +107,8 @@ export function SavingsAndDepositCalculator() {
             step="0.1"
             value={annualRate}
             onChange={(e) => setAnnualRate(parseFloat(e.target.value))}
+            min={MIN_ALLOWED_INTEREST_RATE}
+            max={MAX_ALLOWED_INTEREST_RATE}
             className="w-full border rounded p-2"
           />
         </div>
