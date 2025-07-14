@@ -179,10 +179,16 @@ export function SavingsAndDepositCalculator() {
                       {row.annualRate.toFixed(2)}%
                     </td>
                     <td className="border px-2 py-1">
-                      ${row.interest.toFixed(2)}
+                      {row.interest.toLocaleString("en-AU", {
+                        style: "currency",
+                        currency: "AUD",
+                      })}
                     </td>
                     <td className="border px-2 py-1">
-                      ${row.balance.toFixed(2)}
+                      {row.balance.toLocaleString("en-AU", {
+                        style: "currency",
+                        currency: "AUD",
+                      })}
                     </td>
                   </tr>
                 ))}
@@ -194,7 +200,11 @@ export function SavingsAndDepositCalculator() {
               <span className="font-medium text-[#de313b]">Final balance</span>
               <span className="block font-bold text-4xl mt-1">
                 <span className="text-2xl align-top">$</span>
-                {Math.round(schedule[schedule.length - 1].balance)}
+                {Math.round(
+                  schedule[schedule.length - 1].balance,
+                ).toLocaleString("en-AU", {
+                  currency: "AUD",
+                })}
               </span>
             </div>
             <div className="mb-2">
@@ -203,7 +213,11 @@ export function SavingsAndDepositCalculator() {
               </span>
               <span className="block font-bold text-4xl mt-1">
                 <span className="text-2xl align-top">$</span>
-                {Math.round(schedule[schedule.length - 1].interest)}
+                {Math.round(
+                  schedule[schedule.length - 1].interest,
+                ).toLocaleString("en-AU", {
+                  currency: "AUD",
+                })}
               </span>
             </div>
           </div>
