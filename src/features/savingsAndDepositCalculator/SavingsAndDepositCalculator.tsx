@@ -158,7 +158,7 @@ export function SavingsAndDepositCalculator() {
       </div>
       {schedule.length > 0 && (
         <div className="flex gap-4">
-          <div className="max-h-[32rem] overflow-y-auto flex-1">
+          <div className="max-h-[32rem] overflow-y-auto flex-2">
             <h2 className="text-xl font-bold mb-4">Projected savings</h2>
             <table className="w-full border-collapse">
               <thead>
@@ -195,7 +195,7 @@ export function SavingsAndDepositCalculator() {
               </tbody>
             </table>
           </div>
-          <div className="flex flex-col justify-start border p-4">
+          <div className="flex flex-col justify-start border p-4 flex-1">
             <div>
               <span className="font-medium text-[#de313b]">Final balance</span>
               <span className="block font-bold text-4xl mt-1">
