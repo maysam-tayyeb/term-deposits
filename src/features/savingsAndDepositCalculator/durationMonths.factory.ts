@@ -9,7 +9,7 @@ export function createDurationMonths(value: number): DurationMonths {
     value > MAX_ALLOWED_COMPOUNDING_MONTHS
   ) {
     throw new RangeError(
-      `Duration must be between ${MIN_ALLOWED_COMPOUNDING_MONTHS} and ${MAX_ALLOWED_COMPOUNDING_MONTHS} months. Received: ${value}`,
+      `Duration must be between ${MIN_ALLOWED_COMPOUNDING_MONTHS} and ${MAX_ALLOWED_COMPOUNDING_MONTHS} months. Received: ${value} month${value > 1 ? "s" : ""}`,
     );
   }
   return value as DurationMonths;
