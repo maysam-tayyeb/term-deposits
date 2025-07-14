@@ -17,6 +17,8 @@ import type {
 } from "./compoundingInterestCalculators.types";
 import {
   createAnnualInterestRate,
+  DESCRIPTION_MAX_ALLOWED_INTEREST_RATE,
+  DESCRIPTION_MIN_ALLOWED_INTEREST_RATE,
   MAX_ALLOWED_INTEREST_RATE,
   MIN_ALLOWED_INTEREST_RATE,
 } from "./annualInterestRate.factory.ts";
@@ -111,6 +113,10 @@ export function SavingsAndDepositCalculator() {
             max={MAX_ALLOWED_INTEREST_RATE}
             className="w-full border rounded p-2"
           />
+          <p className="text-xs text-gray-500">
+            Min {DESCRIPTION_MIN_ALLOWED_INTEREST_RATE} and max{" "}
+            {DESCRIPTION_MAX_ALLOWED_INTEREST_RATE}
+          </p>
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">
