@@ -1,5 +1,5 @@
 import "./App.css";
-import SavingsAndDepositCalculator from "./features/savingsAndDepositCalculator/SavingsAndDepositCalculator.tsx";
+import { SavingsAndDepositCalculator } from "./features/savingsAndDepositCalculator";
 
 function App() {
   return (

@@ -24,7 +24,7 @@ const frequencyOptions: { label: string; value: PayFrequency }[] = [
   { label: "At Maturity", value: "atMaturity" },
 ];
 
-export default function SavingsAndDepositCalculator() {
+export function SavingsAndDepositCalculator() {
   const [principal, setPrincipal] = useState<number>(10_000);
   const [annualRate, setAnnualRate] = useState<number>(1.2);
   const [months, setMonths] = useState<number>(3);
