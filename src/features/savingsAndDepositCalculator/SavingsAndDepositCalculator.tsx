@@ -78,7 +78,7 @@ export function SavingsAndDepositCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4 text-[#de313b]">
+      <h1 className="text-3xl font-bold mb-4 text-[#de313b]">
         Calculate Term Deposit (Re-invest)
       </h1>
       {error && <div className="text-red-600 mb-4">{error}</div>}
