@@ -1,4 +1,4 @@
-import type { DurationMonths } from "./types.ts";
+import type { DurationMonths } from "./compoundingInterestCalculators.types.ts";
 
 export const MIN_ALLOWED_COMPOUNDING_MONTHS = 3;
 export const MAX_ALLOWED_COMPOUNDING_MONTHS = 5 * 12;

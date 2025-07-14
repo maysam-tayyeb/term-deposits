@@ -1,4 +1,4 @@
-import type { AnnualInterestRate } from "./types.ts";
+import type { AnnualInterestRate } from "./compoundingInterestCalculators.types.ts";
 
 export const MIN_ALLOWED_INTEREST_RATE = 0;
 export const MAX_ALLOWED_INTEREST_RATE = 15;
