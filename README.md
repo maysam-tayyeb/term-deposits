@@ -1,69 +1,81 @@
-# React + TypeScript + Vite
+# Savings & Deposit Calculator — Term Deposit App 
+*Demo available on [StackBlitz](https://stackblitz.com/~/github.com/maysam-tayyeb/term-deposits)*
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This web app focuses solely on computing compound reinvestment returns for a fixed deposit. Users enter:
 
-Currently, two official plugins are available:
+* **Starting with**: the initial deposit amount
+* **Interest rate**: the nominal interest rate (%)
+* **Investment term**: term length
+* **Interest paid**: reinvestment schedule (monthly, quarterly, annually, or at maturity)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The app instantly recalculates and displays a month-by-month breakdown, total interest earned, and final balance upon any input change.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Assumptions
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* Assumes all earned interest is reinvested at the selected frequency.
+* Interest rate is constant for the entire term.
+* No partial withdrawals or additional deposits during the term.
+* Allows calculating up to 15.00% interest rate
+* Minimum investment term is 3 months and maximum is 5 years(60 months)
+* Re-investment periods are 
+  * Monthly
+  * Quarterly
+  * Annually
+  * At Maturity
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Installation
+
+1. Clone the repo:
+
+   ```bash
+   git clone git@github.com:maysam-tayyeb/term-deposits.git
+   cd term-deposits
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   *Demo available on [StackBlitz](https://stackblitz.com/~/github.com/maysam-tayyeb/term-deposits)*
+
+---
+
+## File Structure
+
+```
+src/
+└─ features/
+   └─ savingsAndDepositCalculator/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Testing
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Run unit tests with Vitest:
+
+```bash
+npm run test
 ```
+
+---
+
+## Customisation
+
+* **Theme Color**: Update `#de313b` in component class names.
+* **Min Allowed Duration**: Change `MIN_ALLOWED_COMPOUNDING_MONTHS` in `durationMonths.factory.ts`.
+* **Max Allowed Duration**: Change `MAX_ALLOWED_COMPOUNDING_MONTHS` in `durationMonths.factory.ts`.
+* **Min Allowed Duration**: Change `MIN_ALLOWED_INTEREST_RATE` in `annualInterestRate.factory.ts`.
+* **Max Allowed Duration**: Change `MAX_ALLOWED_INTEREST_RATE` in `annualInterestRate.factory.ts`.
