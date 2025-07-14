@@ -1,5 +1,4 @@
 # Savings & Deposit Calculator — Term Deposit App 
-*Demo available on [StackBlitz](https://stackblitz.com/~/github.com/maysam-tayyeb/term-deposits)*
 
 This web app focuses solely on computing compound reinvestment returns for a fixed deposit. Users enter:
 
@@ -47,8 +46,6 @@ The app instantly recalculates and displays a month-by-month breakdown, total in
    ```bash
    npm run dev
    ```
-
-   *Demo available on [StackBlitz](https://stackblitz.com/~/github.com/maysam-tayyeb/term-deposits)*
 
 ---
 
