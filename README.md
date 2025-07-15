@@ -23,6 +23,8 @@ The app instantly recalculates and displays a month-by-month breakdown, total in
   * Quarterly
   * Annually
   * At Maturity
+* Fully unit tested
+* Only provide e2e tests for UI
 
 ---
 
@@ -65,6 +67,17 @@ Run unit tests with Vitest:
 
 ```bash
 npm run test
+```
+
+Run e2e tests with Playwright(needs dev server running):
+
+in one terminal
+```bash
+npm run dev
+```
+in another terminal
+```bash
+npx playwright test
 ```
 
 ---
