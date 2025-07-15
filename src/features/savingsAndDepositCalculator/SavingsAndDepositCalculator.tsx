@@ -87,7 +87,11 @@ export function SavingsAndDepositCalculator() {
       <h1 className="text-3xl font-bold mb-4 text-[#de313b]">
         Calculate Term Deposit (Re-invest)
       </h1>
-      {error && <div className="text-red-600 mb-4">{error}</div>}
+      {error && (
+        <div data-testid="error" className="text-red-600 mb-4">
+          {error}
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
           <label className="block text-sm font-medium mb-1">
@@ -98,6 +102,7 @@ export function SavingsAndDepositCalculator() {
             value={principal}
             onChange={(e) => setPrincipal(parseFloat(e.target.value))}
             className="w-full border rounded p-2"
+            data-testid="principal-input"
           />
         </div>
         <div>
@@ -112,6 +117,7 @@ export function SavingsAndDepositCalculator() {
             min={MIN_ALLOWED_INTEREST_RATE}
             max={MAX_ALLOWED_INTEREST_RATE}
             className="w-full border rounded p-2"
+            data-testid="interest-rate-input"
           />
           <p className="text-xs text-gray-500">
             Min {DESCRIPTION_MIN_ALLOWED_INTEREST_RATE} and max{" "}
@@ -129,6 +135,7 @@ export function SavingsAndDepositCalculator() {
             min={MIN_ALLOWED_COMPOUNDING_MONTHS}
             max={MAX_ALLOWED_COMPOUNDING_MONTHS}
             className="w-full border rounded p-2"
+            data-testid="investment-term-input"
           />
           <p className="text-xs text-gray-500">
             Min {MIN_ALLOWED_COMPOUNDING_MONTHS} and max{" "}
@@ -149,6 +156,7 @@ export function SavingsAndDepositCalculator() {
                   checked={frequency === opt.value}
                   onChange={() => setFrequency(opt.value)}
                   className="form-radio mr-2"
+                  data-testid={`radio-re-invest-${opt.value.toLocaleLowerCase()}`}
                 />
                 {opt.label}
               </label>
@@ -198,7 +206,10 @@ export function SavingsAndDepositCalculator() {
           <div className="flex flex-col justify-start border p-4 flex-1">
             <div>
               <span className="font-medium text-[#de313b]">Final balance</span>
-              <span className="block font-bold text-4xl mt-1">
+              <span
+                data-testid="final-balance"
+                className="block font-bold text-4xl mt-1"
+              >
                 <span className="text-2xl align-top">$</span>
                 {Math.round(
                   schedule[schedule.length - 1].balance,
@@ -211,7 +222,10 @@ export function SavingsAndDepositCalculator() {
               <span className="font-medium text-[#de313b]">
                 Total interest earned
               </span>
-              <span className="block font-bold text-4xl mt-1">
+              <span
+                data-testid="total-interest-earned"
+                className="block font-bold text-4xl mt-1"
+              >
                 <span className="text-2xl align-top">$</span>
                 {Math.round(
                   schedule[schedule.length - 1].interest,
